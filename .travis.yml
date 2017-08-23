@@ -22,7 +22,7 @@ deploy:
     gemspec: sync_github_forks.gemspec
     gem: sync_github_forks
     api_key:
-      secure: ""
+      secure: "G6szQHfpFZTfjjtvxYsI6Th1DA66c+8ZgfCKuerQRUyU+T55H4dVqczjgZZsBB6jc4pKHfXdMgwAJ61qRpzw0+jD283lntlq3yIbW4FuumVF8Mm2DAPmaLvANbCyyh6czE7W2StxEOZlmAVTY52x1rhCnR8AaPwf+3mqVmRtEPeyIodjeGhp12g2OAsAMADGg15ncCXC2C9FLTEI9nNLSdigbTn/4od4Fe5htAAZ9MpS7SbrIZRCyO0AD3MiSLTrKwA7DjtNSyHmnJ7ZkDDpb+bfs8ac39pKAcMcJfm8Bo6MyvIpEUvjt4YKt95vQxcWcMSqs8qCkq2XPfwrRifusiCcYY7kKgj5uqGiMmPrnfauDIFXMp++R+7LSK0ddB6PWV3OguO1rTYLcBMQVUCM7W7FQolp5i8dkjDqE0zSuJ2KxfVxdgB79MCwOv9O7FJMDejaMu+zVtgSWKoimRFqSByfR/rIjwYnf3NL9tBwwT3UJfspx5SUFignmKK/Uebh979kDc9aBRHol06k0no1DDiOE+Au7LddrSzUrRItJfVBwONIdNiJbL5tvlN7DQfiN3knI/d5sE5fUFQi0tP6zyQUTMF02f1CXm/z3UIDlvtY4WHgICW9RCrIJT+N+IgUWVAuKO1CBshiKwDznRtXOUyHHVDpDOLz22DW61n2Kt8="
     on:
       tags: true
       rvm: 2.1.9
