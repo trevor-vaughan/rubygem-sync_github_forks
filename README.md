@@ -28,6 +28,24 @@ following locations by default. This can be overridden using the
   * $HOME/.sync_github_forks.yaml
   * $HOME/.sync_github_forks/config.yaml
 
+
+### Config File Format
+
+The configuration file should have the following syntax:
+
+```yaml
+---
+# For example simp/simp-core
+owner/repo:
+  # Sync tags from the remote repo
+  tags: true
+  # Optional, if absent, sync *all* forked branches
+  branches:
+    - master
+    - other_branch
+    - other_other_branch
+```
+
 ## Usage
 
 For command usage, run `sync_github_forks -h`
