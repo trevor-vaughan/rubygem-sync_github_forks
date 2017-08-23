@@ -1,0 +1,29 @@
+---
+language: ruby
+cache: bundler
+sudo: false
+before_install:
+  - rm Gemfile.lock || true
+bundler_args: "--path .vendor"
+notifications:
+  email: false
+rvm:
+  - 2.1.9
+script:
+  - bundle exec rake spec
+matrix:
+  fast_finish: true
+before_deploy:
+  - bundle exec rake clobber
+  - "export GEM_VERSION=`ruby -r ./lib/sync_github_forks/version.rb -e 'puts SyncGithubForks::VERSION'`"
+  - '[[ $TRAVIS_TAG =~ ^${GEM_VERSION}$ ]]'
+deploy:
+  - provider: rubygems
+    gemspec: sync_github_forks.gemspec
+    gem: sync_github_forks
+    api_key:
+      secure: ""
+    on:
+      tags: true
+      rvm: 2.1.9
+      condition: "($SKIP_PUBLISH != true)"
