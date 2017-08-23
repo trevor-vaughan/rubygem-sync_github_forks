@@ -1,5 +1,5 @@
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Build Status](https://travis-ci.org/simp/rubygem-sync_github_forks.svg?branch=master)](https://travis-ci.org/simp/rubygem-sync_github_forks)
+[![Build Status](https://travis-ci.org/onyxpoint/rubygem-sync_github_forks.svg?branch=master)](https://travis-ci.org/onyxpoint/rubygem-sync_github_forks)
 [![Gem](https://img.shields.io/gem/v/sync_github_forks.svg)](https://rubygems.org/gems/sync_github_forks)
 [![Gem_Downloads](https://img.shields.io/gem/dt/sync_github_forks.svg)](https://rubygems.org/gems/sync_github_forks)
 
