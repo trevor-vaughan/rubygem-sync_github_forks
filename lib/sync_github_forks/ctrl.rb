@@ -1,4 +1,15 @@
 module SyncGithubForks::Ctrl
+  def self.list(options)
+    repo_list = options.config.keys
+
+    if repo_list.empty?
+      puts "No repositories found in '#{options.config_file}'"
+    else
+      puts "Repos in '#{options.config_file}'"
+      puts %(  * #{repo_list.sort.join("\n  * ")})
+    end
+  end
+
   def self.sync(options)
     require 'tmpdir'
     require 'octokit'
@@ -8,7 +19,11 @@ module SyncGithubForks::Ctrl
     Octokit.auto_paginate = true
     client = Octokit::Client.new(:access_token => options.github_token)
 
-    forked_repos = options.config
+    if options.repo
+      forked_repos = { options.repo => options.config[options.repo] }
+    else
+      forked_repos = options.config
+    end
 
     forked_repos.keys.sort.each do |repo_name|
       repo = client.repo(repo_name)
