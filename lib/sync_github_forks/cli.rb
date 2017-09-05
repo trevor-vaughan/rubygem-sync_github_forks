@@ -40,10 +40,20 @@ class SyncGithubForks::Cli
     options = OpenStruct.new
     options.config_file = nil
     options.github_token = nil
+    options.repo = nil
+    options.list = false
 
     OptionParser.new do |opts|
       opts.on('-c', '--config FILE', 'Use FILE as the configuration file') do |file|
         options.config_file = file
+      end
+
+      opts.on('-l', '--list', 'List all repos in the configuration file') do
+        options.list = true
+      end
+
+      opts.on('-r', '--repo REPO', 'Update only REPO from the configuration file') do |repo|
+        options.repo = repo.strip
       end
 
       opts.on('-t', '--github_token TOKEN', 'Your GitHub Access Token',
@@ -57,7 +67,7 @@ class SyncGithubForks::Cli
         puts opts
         exit
       end
-    end
+    end.parse!
 
     # Set option defaults
 
@@ -78,6 +88,13 @@ class SyncGithubForks::Cli
       exit 1
     end
 
+    if options.repo
+      unless options.config.keys.include?(options.repo)
+        $stderr.puts("ERROR: Could not find specified repo '#{options.repo}' in '#{options.config_file}'")
+        exit 1
+      end
+    end
+
     ## GitHub Token
     unless options.github_token
       options.github_token = ENV['GITHUB_ACCESS_TOKEN']
@@ -88,7 +105,11 @@ class SyncGithubForks::Cli
       exit 1
     end
 
-    SyncGithubForks::Ctrl.sync(options)
+    if options.list
+      SyncGithubForks::Ctrl.list(options)
+    else
+      SyncGithubForks::Ctrl.sync(options)
+    end
 
     return 0
   end
