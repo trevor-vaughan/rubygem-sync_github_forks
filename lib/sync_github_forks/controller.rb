@@ -1,5 +1,20 @@
-module SyncGithubForks::Ctrl
-  def self.list(options)
+class SyncGithubForks::Controller
+  def initialize(options)
+    require 'octokit'
+
+    @options = options
+
+    Octokit.auto_paginate = true
+    @github_client = Octokit::Client.new(:access_token => options.github_token)
+
+    if @options.repo
+      @forked_repos = { options.repo => options.config[options.repo] }
+    else
+      @forked_repos = options.config
+    end
+  end
+
+  def list(options)
     repo_list = options.config.keys
 
     if repo_list.empty?
@@ -10,23 +25,19 @@ module SyncGithubForks::Ctrl
     end
   end
 
-  def self.sync(options)
-    require 'tmpdir'
+  def get_github_forks(org)
+    fail('Error: You must specify an org to scan for forked repos') unless org
+
     require 'octokit'
+  end
+
+  def sync(options)
+    require 'tmpdir'
 
     line_sep = %(\n#{'='*20}\n)
 
-    Octokit.auto_paginate = true
-    client = Octokit::Client.new(:access_token => options.github_token)
-
-    if options.repo
-      forked_repos = { options.repo => options.config[options.repo] }
-    else
-      forked_repos = options.config
-    end
-
-    forked_repos.keys.sort.each do |repo_name|
-      repo = client.repo(repo_name)
+    @forked_repos.keys.sort.each do |repo_name|
+      repo = @github_client.repo(repo_name)
 
       if repo[:fork]
         Dir.mktmpdir do |tmpdir|
@@ -46,9 +57,9 @@ module SyncGithubForks::Ctrl
                 %x(git fetch --all >& /dev/null)
                 %x(git fetch --tags >& /dev/null)
 
-                branches = forked_repos[repo_name]['branches']
+                branches = @forked_repos[repo_name]['branches']
                 if !branches || branches.empty?
-                  branches = client.branches(repo_name).map{|x| x = x[:name]}
+                  branches = @github_client.branches(repo_name).map{|x| x = x[:name]}
                 end
 
                 branches.each do |branch|
@@ -66,7 +77,7 @@ module SyncGithubForks::Ctrl
                   %x(git push origin HEAD:#{branch})
                 end
 
-                if forked_repos[repo_name]['tags']
+                if @forked_repos[repo_name]['tags']
                   %x(git push origin --tags >& /dev/null)
                 end
 
